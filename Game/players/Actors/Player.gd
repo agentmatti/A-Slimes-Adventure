@@ -10,10 +10,16 @@ func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
 func _physics_process(delta: float) -> void:
 	var is_jump_interrupted: = Input.is_action_just_pressed("stomp") and _velocity.y < 0.0
 	var direction: = get_direction()
+	looking_direction(direction)
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
 
+func looking_direction(direction: Vector2):
+	if Input.is_action_just_pressed("move_right") == true:
+		get_node("Sprite").set_flip_h(false)
+	elif Input.is_action_just_pressed("move_left") == true:
+		get_node("Sprite").set_flip_h(true)
 
 func get_direction() -> Vector2:
 	return Vector2(
