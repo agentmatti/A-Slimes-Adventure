@@ -1,6 +1,8 @@
 extends Actor
 export var stomp_impulse: = 500.0
 
+onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
+
 # warning-ignore:unused_argument
 func _on_EnemyDetector_area_entered(area: Area2D) -> void:
 	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
@@ -17,6 +19,8 @@ func _physics_process(delta: float) -> void:
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
+func animation_update():
+	anim_player.play("Idle")
 
 func looking_direction():
 	if Input.is_action_pressed("move_right") == true:
