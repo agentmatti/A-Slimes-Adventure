@@ -1,24 +1,27 @@
 extends Actor
 export var stomp_impulse: = 500.0
 
+# warning-ignore:unused_argument
 func _on_EnemyDetector_area_entered(area: Area2D) -> void:
 	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
 
+# warning-ignore:unused_argument
 func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
 	queue_free()
 
+# warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
 	var is_jump_interrupted: = Input.is_action_just_pressed("stomp") and _velocity.y < 0.0
 	var direction: = get_direction()
-	looking_direction(direction)
+	looking_direction()
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
 
-func looking_direction(direction: Vector2):
-	if Input.is_action_just_pressed("move_right") == true:
+func looking_direction():
+	if Input.is_action_pressed("move_right") == true:
 		get_node("Sprite").set_flip_h(false)
-	elif Input.is_action_just_pressed("move_left") == true:
+	elif Input.is_action_pressed("move_left") == true:
 		get_node("Sprite").set_flip_h(true)
 
 func get_direction() -> Vector2:
