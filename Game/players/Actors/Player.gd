@@ -1,7 +1,9 @@
 extends Actor
 export var stomp_impulse: = 500.0
+export var lives: = 3
 
 onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
+onready var Label: Label = get_node("Label")
 
 # warning-ignore:unused_argument
 func _on_EnemyDetector_area_entered(area: Area2D) -> void:
@@ -9,18 +11,26 @@ func _on_EnemyDetector_area_entered(area: Area2D) -> void:
 
 # warning-ignore:unused_argument
 func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
-	queue_free()
+	lives = lives - 1
+	if lives == 0 or lives < 0:
+		anim_player.play("ded")
+		queue_free()
 
 # warning-ignore:unused_argument
 func _physics_process(delta: float) -> void:
 	var is_jump_interrupted: = Input.is_action_just_pressed("stomp") and _velocity.y < 0.0
 	var direction: = get_direction()
+	animation_update()
 	looking_direction()
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
 func animation_update():
-	anim_player.play("Idle")
+	Label.text = str(lives)
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
+		anim_player.play("moving")
+	else:
+		anim_player.play("Idle")
 
 func looking_direction():
 	if Input.is_action_pressed("move_right") == true:

@@ -1,10 +1,13 @@
 tool
 extends Area2D
 
+export var next_scene: PackedScene
+export(String, FILE) var door_texture
+
 onready var anim_player: AnimationPlayer = $AnimationPlayer # the $(shift+4=$) replaces/ is the same as get_node()
 
-export var next_scene: PackedScene
-
+func ready():
+	$door1.texture = door_texture
 
 func _on_body_entered(body):
 	teleport()
