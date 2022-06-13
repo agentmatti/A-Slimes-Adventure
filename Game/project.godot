@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Slimy Adventure"
+config/name="A Slimes Adventure"
 run/main_scene="res://Levels/TestLevel.tscn"
 config/icon="res://icon.png"
 
