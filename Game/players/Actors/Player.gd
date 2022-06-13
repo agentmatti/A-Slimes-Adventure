@@ -29,8 +29,10 @@ func animation_update():
 	Label.text = str(lives)
 	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 		anim_player.play("moving")
+	elif Input.is_action_pressed("jump"):
+		anim_player.play("moving")
 	else:
-		anim_player.play("Idle")
+		anim_player.play("Idle") 
 
 func looking_direction():
 	if Input.is_action_pressed("move_right") == true:
@@ -47,8 +49,8 @@ func get_direction() -> Vector2:
 
 func calculate_move_velocity(
 		linear_velocity: Vector2,
-		player_speed: Vector2,
 		direction: Vector2,
+		player_speed: Vector2,
 		is_jump_interruptet: bool
 	) -> Vector2:
 	var out: = linear_velocity
