@@ -158,6 +158,7 @@ anims/ded = SubResource( 5 )
 anims/moving = SubResource( 6 )
 
 [node name="Label" type="Label" parent="."]
+visible = false
 margin_left = -20.3169
 margin_top = -32.9647
 margin_right = 19.6831
