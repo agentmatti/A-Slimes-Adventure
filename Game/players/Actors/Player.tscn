@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://players/Actors/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/player sprites.png" type="Texture" id=2]
+[ext_resource path="res://players/Actors/dash.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.00994, 6.99876 )
@@ -158,10 +159,11 @@ anims/ded = SubResource( 5 )
 anims/moving = SubResource( 6 )
 
 [node name="Label" type="Label" parent="."]
-visible = false
 margin_left = -20.3169
 margin_top = -32.9647
 margin_right = 19.6831
 margin_bottom = -18.9647
+
+[node name="dash" parent="." instance=ExtResource( 3 )]
 [connection signal="area_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_area_entered"]
 [connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]

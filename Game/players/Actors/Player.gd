@@ -1,18 +1,23 @@
 extends Actor
 export var stomp_impulse: = 500.0
 export var lives: = 3
+export var dash_speed: = 1000
+export var dash_duration: = 0.1
 
-export onready var dash: = 0.0
 
 onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
 onready var Label: Label = get_node("Label")
+onready var dash: = $dash
+onready var sprite = $Sprite
 
 # warning-ignore:unused_argument
 func _on_EnemyDetector_area_entered(area: Area2D) -> void:
+	if dash.is_dashing(): return
 	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
 
 # warning-ignore:unused_argument
 func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
+	if dash.is_dashing(): return
 	lives = lives - 1
 	if lives == 0 or lives < 0:
 		anim_player.play("ded")
@@ -24,7 +29,12 @@ func _physics_process(delta: float) -> void:
 	var direction: = get_direction()
 	animation_update()
 	looking_direction()
+	
+	if Input.is_action_just_pressed("dash") and dash.can_dash and !dash.is_dashing():
+		dash.start_dash(dash_duration)
+	
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
+	
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
 func animation_update():
@@ -49,13 +59,6 @@ func get_direction() -> Vector2:
 	)
 	
 
-func dash():
-	if Input.is_action_just_pressed("dash"):
-		dash = 1000.0
-	else:
-		dash = 0.0
-	return dash
-
 func calculate_move_velocity(
 		linear_velocity: Vector2,
 		direction: Vector2,
@@ -63,12 +66,20 @@ func calculate_move_velocity(
 		is_jump_interruptet: bool
 	) -> Vector2:
 	var out: = linear_velocity
-	out.x = player_speed.x * direction.x + dash
+	out.x = player_speed.x * direction.x
 	out.y = out.y + (gravity * get_physics_process_delta_time())
 	if direction.y == -1.0:
 		out.y = player_speed.y * direction.y
 	if is_jump_interruptet:
 		out.y = 0.0
+	
+	if dash.is_dashing():
+		if out.x < 0:
+			out.x = -dash_speed
+		if out.x > 0:
+			out.x = dash_speed
+		else: out.x
+	
 	return out
 
 func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float) -> Vector2:

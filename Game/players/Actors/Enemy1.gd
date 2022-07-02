@@ -27,6 +27,17 @@ func _on_stompDetector_body_entered(body: PhysicsBody2D) -> void:
 	else:
 		$AnimationPlayer.play("damage")
 	
+func still_alive():
+	if lives == 0 or lives < 0:
+		stillalive = 0
+		remove_child($CollisionShape2D)
+		remove_child($Label)
+		remove_child($stompDetector/CollisionShape2D)
+		$AnimationPlayer.play("ded")
+		lives = 0
+	else:
+		$AnimationPlayer.play("damage")
+	
 func _physics_process(delta: float) -> void:
 	Label.text = str(lives)
 	_velocity.y = _velocity.y + gravity * delta * stillalive
@@ -47,3 +58,9 @@ func _on_Area2D_body_entered(body):
 
 func _on_Area2D_body_exited(body):
     player = null
+
+func _on_Dash_detector_body_entered(body):
+	if body == player and player.is_dashing():
+		lives =- 0.5
+	else:
+		pass
