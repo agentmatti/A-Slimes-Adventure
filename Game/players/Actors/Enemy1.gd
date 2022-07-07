@@ -57,10 +57,11 @@ func _on_Area2D_body_entered(body):
 		player = body
 
 func _on_Area2D_body_exited(body):
-    player = null
+	player = null
 
 func _on_Dash_detector_body_entered(body):
-	if body == player and player.is_dashing():
-		lives =- 0.5
+	if body.name == "player": #and player.is_dashing():
+		print("yaass")
+		#lives =- 0.5
 	else:
 		pass

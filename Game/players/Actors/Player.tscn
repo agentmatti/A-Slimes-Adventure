@@ -121,8 +121,8 @@ script = ExtResource( 1 )
 position = Vector2( 0, -9 )
 scale = Vector2( 1.00028, 1.04972 )
 texture = ExtResource( 2 )
-vframes = 10
 hframes = 10
+vframes = 10
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -165,5 +165,6 @@ margin_right = 19.6831
 margin_bottom = -18.9647
 
 [node name="dash" parent="." instance=ExtResource( 3 )]
+
 [connection signal="area_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_area_entered"]
 [connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]
