@@ -10,10 +10,12 @@ onready var Label: Label = get_node("Label")
 onready var dash: = $dash
 onready var sprite = $Sprite
 
+var is_dashing = false
+
 # warning-ignore:unused_argument
-func _on_EnemyDetector_area_entered(area: Area2D) -> void:
-	if dash.is_dashing(): return
-	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
+#func _on_EnemyDetector_area_entered(area: Area2D) -> void:
+#	if dash.is_dashing(): return
+#	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
 
 # warning-ignore:unused_argument
 func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
@@ -30,8 +32,10 @@ func _physics_process(delta: float) -> void:
 	animation_update()
 	looking_direction()
 	
-	if Input.is_action_just_pressed("dash") and dash.can_dash and !dash.is_dashing():
+	if Input.is_action_just_pressed("dash") and !dash.is_dashing():
 		dash.start_dash(dash_duration)
+#		while dash.is_dashing():
+#			is_dashing = true
 	
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	
@@ -78,8 +82,6 @@ func calculate_move_velocity(
 			out.x = -dash_speed
 		if out.x > 0:
 			out.x = dash_speed
-		else: out.x
-	
 	return out
 
 func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float) -> Vector2:
