@@ -31,24 +31,31 @@ func _physics_process(delta: float) -> void:
 	var direction: = get_direction()
 	animation_update()
 	looking_direction()
-	
-	if Input.is_action_just_pressed("dash") and !dash.is_dashing():
-		dash.start_dash(dash_duration)
-#		while dash.is_dashing():
-#			is_dashing = true
+	check_for_action()
 	
 	_velocity = calculate_move_velocity(_velocity, direction, player_speed, is_jump_interrupted)
 	
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	
+
+func check_for_action():
+	if Input.is_action_just_pressed("dash") and !dash.is_dashing():
+		dash.start_dash(dash_duration)
+#		while dash.is_dashing():
+#			is_dashing = true
+	if Input.is_action_just_pressed("attack"):
+		anim_player.play("hit-attack")
+		yield()
+
+
 func animation_update():
 	Label.text = str(lives)
 	if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 		anim_player.play("moving")
-	elif Input.is_action_pressed("jump"):
-		anim_player.play("moving")
-	else:
-		anim_player.play("Idle") 
+#	elif Input.is_action_pressed("jump"):
+#		anim_player.play("moving")
+#	else:
+#		anim_player.play("Idle") 
 
 func looking_direction():
 	if Input.is_action_pressed("move_right") == true:
@@ -90,3 +97,8 @@ func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float) -> Vecto
 	return out
 
 
+
+
+func _on_attackbox_body_entered(body):
+	if body.name == "Enemy1":
+		body.get_slashed()

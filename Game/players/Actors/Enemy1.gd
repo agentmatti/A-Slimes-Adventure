@@ -52,3 +52,7 @@ func _on_Dash_detector_body_entered(body: KinematicBody2D):
 		lives = lives - 0.5
 	else:
 		pass
+
+
+func get_slashed(lives: int):
+	lives =- 1.0
